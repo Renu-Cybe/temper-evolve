@@ -1,103 +1,113 @@
-# 🧊 Temper Evolve
+# 🧊 Temper Evolve v2.0
 
-> 一个自进化的 Coding Agent，每天记录成长。
+> 自进化 Coding Agent，采用 Codong 风格的结构化错误处理
 
 ---
 
 ## ✨ 快速开始
 
-### 1. 克隆仓库
-
-```bash
-git clone https://github.com/Renu-Cybe/temper-evolve.git
-cd temper-evolve
-```
-
-### 2. 安装依赖
-
-```bash
-pip install openai python-dotenv
-```
-
-### 3. 配置 API Key
-
-```bash
-notepad .env
-```
-
-写入你的阿里云百炼 API Key：
-
-```env
-DASHSCOPE_API_KEY=sk-你的密钥
-```
-
-### 4. 启动 Temper
-
 ```bash
 python temper.py
 ```
 
----
+启动后输入 `tools` 查看可用工具。
 
-## 🚀 使用方法
+### 内置命令
 
-启动后会看到：
-
-```
-🧊 Temper Agent 启动 (DashScope / 通义千问)
-输入 'exit' 退出
-
-👤 你:
-```
-
-直接输入自然语言指令，例如：
-
-| 指令 | 说明 |
+| 命令 | 功能 |
 |------|------|
-| `看一下当前目录` | 列出文件 |
-| `读取 README.md` | 查看文件内容 |
-| `当前目录有什么文件` | 探索文件系统 |
+| `tools` | 查看可用工具 |
+| `/clear` | 清空对话历史 |
+| `/history` | 查看当前历史长度 |
 | `exit` | 退出程序 |
 
-### 示例对话
+### 对话记忆
 
-```
-👤 你: 看一下当前目录有什么文件
+Temper 会自动保留最近 **20 轮**对话历史，你可以：
+- 引用之前的内容继续对话
+- 使用 `/clear` 清空历史
+- 使用 `/history` 查看当前历史长度
 
-🤖 Temper: {"tool": "run_bash", "args": {"command": "dir"}}
+---
 
-🔧 调用: run_bash({'command': 'dir'})
-📤 结果:
-  驱动器 C 中的卷是 系统
-  ...
-  temper.py
-  README.md
+## ⚙️ 配置
 
-🤖 Temper: 当前目录包含 temper.py 和 README.md 等文件
+创建 `.env` 文件：
+
+```env
+DASHSCOPE_API_KEY=sk-你的密钥
 ```
 
 ---
 
 ## 🛠️ 可用工具
 
-| 工具 | 功能 |
-|------|------|
-| `read_file(path)` | 读取文件内容 |
-| `run_bash(command)` | 执行 shell 命令 |
-| `edit_file(path, old_string, new_string)` | **修改文件内容**（支持自修复） |
+### FS 模块（文件系统）
 
-## ✨ 当前功能
+| 工具 | 描述 | 示例 |
+|------|------|------|
+| `fs.read` | 读取文件 | `{"tool": "fs.read", "args": {"path": "file.txt"}}` |
+| `fs.write` | 写入文件 | `{"tool": "fs.write", "args": {"path": "file.txt", "content": "..."}}` |
+| `fs.edit` | 编辑文件（精确匹配） | `{"tool": "fs.edit", "args": {"path": "file.txt", "old_string": "...", "new_string": "..."}}` |
+| `fs.exists` | 检查存在 | `{"tool": "fs.exists", "args": {"path": "file.txt"}}` |
+| `fs.list` | 列出目录 | `{"tool": "fs.list", "args": {"path": "."}}` |
+| `fs.read_json` | 读取 JSON | `{"tool": "fs.read_json", "args": {"path": "data.json"}}` |
 
-- ✅ **读取文件** (`read_file`)
-- ✅ **执行命令** (`run_bash`)
-- ✅ **修改文件** (`edit_file`) - Temper 现在可以修改自己的代码！
-- ✅ **多轮对话**
-- ✅ **工具调用链**（最多 5 轮）
+### Shell 模块
 
-## ⚠️ 已知限制
+| 工具 | 描述 | 示例 |
+|------|------|------|
+| `shell.run` | 执行命令 | `{"tool": "shell.run", "args": {"cmd": "dir"}}` |
 
-- 单次只能处理一个工具调用
-- 无对话历史保存（重启后丢失）
+---
+
+## 🎯 核心特性
+
+- ✅ **结构化错误** - 每个错误包含 `code`, `message`, `fix`, `retry` 字段（学习 Codong）
+- ✅ **模块化工具** - 按功能分组（fs/shell），易于扩展
+- ✅ **类型验证** - 自动检查参数类型
+- ✅ **自我修改** - 可以用 `fs.edit` 修改 temper.py 自己的代码
+- ✅ **Python 语法检查** - 编辑 .py 文件时自动验证 AST
+- ✅ **智能内容截断** - 长文件内容智能截断（尝试在换行处截断，显示总字符数）
+- ✅ **对话记忆** - 自动保留最近 20 轮对话上下文
+
+---
+
+## 💡 使用示例
+
+### 读取文件
+```
+👤 你: 读取 README.md
+🤖 Temper: {"tool": "fs.read", "args": {"path": "README.md"}}
+🔧 调用: fs.read({"path": "README.md"})
+✅ 结果: # 🧊 Temper Evolve v2.0...
+```
+
+### 自我修改
+```
+👤 你: 修改 temper.py，把 temperature 从 0.6 改成 0.8
+🤖 Temper: {"tool": "fs.read", "args": {"path": "temper.py"}}
+...（读取内容）...
+🤖 Temper: {"tool": "fs.edit", "args": {"path": "temper.py", "old_string": "temperature=0.6", "new_string": "temperature=0.8"}}
+🔧 调用: fs.edit(...)
+✅ 结果: 成功修改 temper.py
+```
+
+### 对话记忆（多轮对话）
+```
+👤 你: 读取 README.md
+🤖 Temper: {"tool": "fs.read", "args": {"path": "README.md"}}
+✅ 结果: # 🧊 Temper Evolve v2.0...
+
+👤 你: 总结一下刚才的内容      ← 有上下文记忆！
+🤖 Temper: 这是 Temper v2.0 的说明文档，主要特性包括...
+
+👤 你: 再详细说说第一点
+🤖 Temper: 结构化错误是指...
+
+👤 你: /history
+📜 当前对话历史: 3 轮 (最多保留 20 轮)
+```
 
 ---
 
@@ -105,23 +115,32 @@ python temper.py
 
 ```
 temper-evolve/
-├── temper.py          # 主程序
-├── .env               # API Key（不提交到 Git）
-├── .gitignore         # 忽略 .env
-├── journal/           # 进化日志
+├── temper/                  # 核心包
+│   ├── core/               # 核心模块
+│   │   ├── errors.py       # 结构化错误系统
+│   │   └── types.py        # 类型验证
+│   └── tools/              # 工具模块
+│       ├── fs.py           # 文件系统
+│       └── shell.py        # 命令执行
+├── temper.py               # 主入口
+├── journal/                # 进化日志
 │   └── day-001.md
-└── README.md          # 本文件
+└── README.md
 ```
 
 ---
 
 ## 📖 每日进化
 
-查看 [`journal/`](./journal/) 目录了解 Temper 的成长记录。
-
 | 日期 | 日志 |
 |------|------|
-| 2026-03-28 | [Day 1](./journal/day-001.md) - 骨架搭建 + 获得「自我修改」能力 |
+| 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
+
+---
+
+## 🔗 相关项目
+
+- [Codong](https://github.com/brettinhere/Codong) - AI 原生编程语言，Temper 的错误系统设计参考了 Codong
 
 ---
 
