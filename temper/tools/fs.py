@@ -17,12 +17,14 @@ def _resolve_path(path):
         return os.path.join(SCRIPT_DIR, path)
     return path
 
-def read(path):
+def read(path, offset=0, limit=None):
     """
     读取文件内容
 
     Args:
         path: 文件路径（支持相对路径）
+        offset: 起始行号（从0开始，可选）
+        limit: 读取行数（可选，None表示读取全部）
 
     Returns:
         成功: {"ok": True, "value": "文件内容"}
@@ -37,8 +39,29 @@ def read(path):
 
     try:
         with open(path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        return ok(content)
+            lines = f.readlines()
+        
+        total_lines = len(lines)
+        
+        # 处理 offset
+        if offset < 0:
+            offset = 0
+        if offset >= total_lines:
+            return ok("")
+        
+        # 处理 limit
+        end_line = total_lines
+        if limit is not None and limit > 0:
+            end_line = min(offset + limit, total_lines)
+        
+        # 提取指定范围的行
+        selected_lines = lines[offset:end_line]
+        content = ''.join(selected_lines)
+        
+        # 添加文件信息
+        info = f"[文件: {path}, 总行数: {total_lines}, 显示: {offset+1}-{end_line}行]\n"
+        
+        return ok(info + content)
     except FileNotFoundError:
         return error(
             "E1001_FILE_NOT_FOUND",

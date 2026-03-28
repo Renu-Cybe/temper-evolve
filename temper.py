@@ -8,6 +8,9 @@ AI 原生 Coding Agent，结构化错误处理，模块化工具系统
 import os
 import sys
 import json
+import logging
+import traceback
+from datetime import datetime
 
 # 添加项目路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +24,65 @@ from temper.tools import TOOLS, call
 # 加载环境变量
 load_dotenv()
 
+# ==================== 日志系统 ====================
+LOG_FILE = "temper.log"
+ERROR_LOG_FILE = "temper_errors.log"
+
+def setup_logging():
+    """配置日志系统"""
+    # 主日志 - 记录所有信息
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        handlers=[
+            logging.FileHandler(LOG_FILE, encoding='utf-8', mode='a'),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
+    
+    # 错误日志 - 仅记录错误和异常
+    error_handler = logging.FileHandler(ERROR_LOG_FILE, encoding='utf-8', mode='a')
+    error_handler.setLevel(logging.ERROR)
+    error_handler.setFormatter(logging.Formatter(
+        '%(asctime)s [%(levelname)s] %(message)s\n%(exc_info)s'
+    ))
+    
+    logger = logging.getLogger('temper')
+    logger.addHandler(error_handler)
+    return logger
+
+# 初始化日志
+logger = setup_logging()
+
+def log_exception(e, context=""):
+    """记录异常详细信息"""
+    error_msg = f"""
+{'='*60}
+异常时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+上下文: {context}
+异常类型: {type(e).__name__}
+异常信息: {str(e)}
+堆栈跟踪:
+{traceback.format_exc()}
+{'='*60}
+"""
+    logger.error(error_msg)
+    return error_msg
+
+def log_api_error(response, context=""):
+    """记录 API 错误"""
+    error_msg = f"""
+{'='*60}
+API 错误时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+上下文: {context}
+响应状态: {getattr(response, 'status_code', 'N/A')}
+响应内容: {getattr(response, 'text', str(response))}
+{'='*60}
+"""
+    logger.error(error_msg)
+
+# ====================================================
+
 # ==================== 对话记忆系统 ====================
 MAX_HISTORY = 20           # 保留最近 20 轮对话
 HISTORY_FILE = ".temper_history.json"  # 历史文件路径
@@ -33,8 +95,10 @@ def load_history():
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 conversation_history = data.get('history', [])
+                logger.info(f"已加载 {len(conversation_history)//2} 轮历史对话")
                 print(f"📂 已加载 {len(conversation_history)//2} 轮历史对话")
     except Exception as e:
+        log_exception(e, "加载历史失败")
         print(f"⚠️ 加载历史失败: {e}")
         conversation_history = []
 
@@ -43,7 +107,9 @@ def save_history():
     try:
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
             json.dump({'history': conversation_history}, f, ensure_ascii=False, indent=2)
+        logger.info(f"历史已保存，当前 {len(conversation_history)//2} 轮对话")
     except Exception as e:
+        log_exception(e, "保存历史失败")
         print(f"⚠️ 保存历史失败: {e}")
 
 # 初始化时加载历史

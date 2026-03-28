@@ -80,6 +80,7 @@ DASHSCOPE_API_KEY=sk-你的密钥
 | 工具 | 描述 | 示例 |
 |------|------|------|
 | `fs.read` | 读取文件 | `{"tool": "fs.read", "args": {"path": "file.txt"}}` |
+| `fs.read` | 读取文件（分页） | `{"tool": "fs.read", "args": {"path": "file.txt", "offset": 0, "limit": 50}}` |
 | `fs.write` | 写入文件 | `{"tool": "fs.write", "args": {"path": "file.txt", "content": "..."}}` |
 | `fs.edit` | 编辑文件（精确匹配） | `{"tool": "fs.edit", "args": {"path": "file.txt", "old_string": "...", "new_string": "..."}}` |
 | `fs.exists` | 检查存在 | `{"tool": "fs.exists", "args": {"path": "file.txt"}}` |
@@ -103,6 +104,7 @@ DASHSCOPE_API_KEY=sk-你的密钥
 - ✅ **Python 语法检查** - 编辑 .py 文件时自动验证 AST
 - ✅ **智能内容截断** - 长文件内容智能截断（尝试在换行处截断，显示总字符数）
 - ✅ **对话记忆** - 自动保留最近 20 轮对话上下文，支持持久化（重启后恢复）
+- ✅ **文件分页读取** - `fs.read` 支持 `offset` 和 `limit` 参数，高效读取大文件
 
 ---
 
@@ -168,7 +170,7 @@ temper-evolve/
 | 日期 | 日志 |
 |------|------|
 | 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
-| 2026-03-28 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复与历史持久化 |
+| 2026-03-28 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强与日志系统 |
 
 ---
 
