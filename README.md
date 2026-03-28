@@ -1,3 +1,4 @@
+[文件: C:\Users\Administrator\Documents\temper-evolve\README.md, 总行数: 183, 显示: 1-183行]
 # 🧊 Temper Evolve v2.0
 
 > 自进化 Coding Agent，采用 Codong 风格的结构化错误处理
@@ -159,8 +160,13 @@ temper-evolve/
 │       └── shell.py        # 命令执行
 ├── temper.py               # 主入口
 ├── journal/                # 进化日志
-│   └── day-001.md
-└── README.md
+│   ├── day-001.md          # Day 1: v2.0 Codong 风格重构
+│   └── day-002.md          # Day 2: 首次自修复、历史持久化、工具增强与日志系统
+├── .temper_history.json    # 对话历史（自动创建）
+├── temper.log              # 运行日志（自动创建）
+├── temper_errors.log       # 错误日志（自动创建）
+├── .env                    # 环境变量（需手动创建）
+└── README.md               # 项目文档
 ```
 
 ---
