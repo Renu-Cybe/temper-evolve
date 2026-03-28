@@ -1,10 +1,25 @@
 import os
 import json
 import subprocess
+from dotenv import load_dotenv
 from openai import OpenAI
 
+# 加载 .env 文件
+load_dotenv()
+
+# 从环境变量读取 Key
+api_key = os.getenv("DASHSCOPE_API_KEY")
+if not api_key:
+    print("❌ 错误：没有找到 DASHSCOPE_API_KEY")
+    print("")
+    print("请创建 .env 文件，写入：")
+    print("DASHSCOPE_API_KEY=sk-你的密钥")
+    print("")
+    print("然后在 PowerShell 运行：pip install python-dotenv")
+    exit(1)
+
 client = OpenAI(
-    api_key="sk-sp-533e2da139d5450d9f05cad829fc1b4d",
+    api_key=api_key,
     base_url="https://coding.dashscope.aliyuncs.com/v1"
 )
 
