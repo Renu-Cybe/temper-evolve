@@ -25,19 +25,20 @@ client = OpenAI(
 
 SYSTEM_PROMPT = """你是 Temper，一个自进化的 coding agent。
 
-你有两个工具：
+你有三个工具：
 - read_file(path) — 读取文件内容
 - run_bash(command) — 执行 shell 命令
+- edit_file(path, old_string, new_string) — 修改文件内容（old_string 必须精确匹配原文）
 
-用户会给你任务，你需要：
-1. 分析需要做什么
-2. 使用工具完成
-3. 简洁汇报结果
+重要规则：
+1. 使用 edit_file 时，old_string 必须是从文件中读取的精确内容
+2. 一次只输出一个工具调用
+3. 如果用户让你修复代码，先读取文件，然后使用 edit_file 修改
 
 工具调用格式（严格 JSON）：
 {"tool": "read_file", "args": {"path": "xxx"}}
 或
-{"tool": "run_bash", "args": {"command": "xxx"}}
+{"tool": "edit_file", "args": {"path": "xxx", "old_string": "xxx", "new_string": "xxx"}}
 """
 
 def read_file(path):
@@ -54,9 +55,24 @@ def run_bash(command):
     except Exception as e:
         return f"Error: {e}"
 
+def edit_file(path, old_string, new_string):
+    """替换文件中的内容，old_string 必须精确匹配"""
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        if old_string not in content:
+            return f"Error: 在 {path} 中未找到匹配内容"
+        content = content.replace(old_string, new_string, 1)
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        return f"成功修改 {path}"
+    except Exception as e:
+        return f"Error: {e}"
+
 TOOLS = {
     "read_file": read_file,
-    "run_bash": run_bash
+    "run_bash": run_bash,
+    "edit_file": edit_file
 }
 
 def chat(user_input):
