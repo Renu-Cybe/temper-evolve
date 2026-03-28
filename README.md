@@ -6,6 +6,39 @@
 
 ## ✨ 快速开始
 
+### 1. 克隆仓库
+
+```bash
+git clone https://github.com/Renu-Cybe/temper-evolve.git
+cd temper-evolve
+```
+
+### 2. 安装依赖
+
+```bash
+pip install openai python-dotenv
+```
+
+### 3. 配置 API Key
+
+创建 `.env` 文件：
+
+```bash
+# Windows
+notepad .env
+
+# Linux/Mac
+touch .env
+```
+
+写入你的阿里云百炼 API Key：
+
+```env
+DASHSCOPE_API_KEY=sk-你的密钥
+```
+
+### 4. 启动 Temper
+
 ```bash
 python temper.py
 ```
