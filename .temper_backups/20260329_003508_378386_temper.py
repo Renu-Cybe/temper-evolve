@@ -22,33 +22,8 @@ from temper.tools import TOOLS, call
 load_dotenv()
 
 # ==================== 对话记忆系统 ====================
+conversation_history = []  # 持久化对话历史
 MAX_HISTORY = 20           # 保留最近 20 轮对话
-HISTORY_FILE = ".temper_history.json"  # 历史文件路径
-
-def load_history():
-    """从文件加载对话历史"""
-    global conversation_history
-    try:
-        if os.path.exists(HISTORY_FILE):
-            with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                conversation_history = data.get('history', [])
-                print(f"📂 已加载 {len(conversation_history)//2} 轮历史对话")
-    except Exception as e:
-        print(f"⚠️ 加载历史失败: {e}")
-        conversation_history = []
-
-def save_history():
-    """保存对话历史到文件"""
-    try:
-        with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-            json.dump({'history': conversation_history}, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"⚠️ 保存历史失败: {e}")
-
-# 初始化时加载历史
-conversation_history = []
-load_history()
 
 def get_messages_with_history(current_input):
     """构建包含历史的 messages"""
@@ -72,15 +47,11 @@ def add_to_history(user_input, assistant_response):
     # 清理过旧的历史（保留最近 MAX_HISTORY 轮）
     while len(conversation_history) > MAX_HISTORY * 2:
         conversation_history.pop(0)
-    
-    # 持久化到文件
-    save_history()
 
 def clear_history():
     """清空对话历史"""
     global conversation_history
     conversation_history = []
-    save_history()  # 同步清空文件
     return "对话历史已清空"
 
 def get_history_info():
@@ -121,12 +92,19 @@ SYSTEM_PROMPT = """你是 Temper，一个 AI 原生的 Coding Agent。
 ### shell 模块（命令执行）
 - {"tool": "shell.run", "args": {"cmd": "命令"}} — 执行 shell 命令
 
+### self 模块（自我修改 - 带测试+回滚）
+- {"tool": "self.edit_safe", "args": {"path": "文件名", "old_string": "原内容", "new_string": "新内容", "verify": true}} — 安全编辑（自动备份+语法检查+测试+失败回滚）
+- {"tool": "self.list_backups", "args": {}} — 列出所有备份
+- {"tool": "self.restore", "args": {"path": "原文件名", "timestamp": "备份时间戳"}} — 恢复到指定备份
+- {"tool": "self.cleanup", "args": {"keep": 10}} — 清理旧备份（默认保留最近10个）
+
 ## 重要规则
 
 1. **一次只能调用一个工具**
 2. **严格 JSON 格式**：{"tool": "...", "args": {...}}
 3. **错误处理**：如果工具返回 {"ok": false, "error": "..."}，分析错误信息并尝试修复
-4. **自我修改**：你可以使用 fs.edit 修改 temper.py 自己的代码
+4. **自我修改推荐用 self.edit_safe**（带自动备份和回滚），只有在确定不需要验证时才用 fs.edit
+5. **回滚机制**：self.edit_safe 会自动验证语法和运行测试，如果失败会自动回滚到备份
 
 ## 输出格式
 
@@ -168,14 +146,12 @@ def format_result(result, max_length=8000):
         if len(serialized) > max_length:
             # 简化输出：只保留前N个元素/键
             if isinstance(value, list) and len(value) > 100:
-                original_len = len(value)
-                value = value[:100] + [f"... [还有 {original_len - 100} 个元素未显示]"]
+                value = value[:100] + [f"... [还有 {len(value) - 100} 个元素未显示]"]
             elif isinstance(value, dict) and len(value) > 50:
                 # 保留前50个键
-                original_len = len(value)
                 items = list(value.items())[:50]
                 value = dict(items)
-                value["__truncated__"] = f"... [还有 {original_len - 50} 个键未显示]"
+                value["__truncated__"] = f"... [还有 {len(value) - 50} 个键未显示]"
     
     return json.dumps({"ok": True, "value": value}, ensure_ascii=False, indent=2)
 
@@ -204,23 +180,10 @@ def chat(user_input):
         # 检查是否需要调用工具
         try:
             if '"tool":' in content:
-                # 使用 brace counting 精确提取第一个 JSON
+                # 提取 JSON 工具调用
                 start = content.find('{')
-                brace_count = 0
-                end = start
-                for i, char in enumerate(content[start:]):
-                    if char == '{':
-                        brace_count += 1
-                    elif char == '}':
-                        brace_count -= 1
-                        if brace_count == 0:
-                            end = start + i + 1
-                            break
-                json_str = content[start:end]
-                tool_call = json.loads(json_str)
-
-                # 强制只处理第一个工具调用（截断后续内容）
-                content = content[:end]
+                end = content.rfind('}') + 1
+                tool_call = json.loads(content[start:end])
 
                 tool_name = tool_call.get("tool")
                 tool_args = tool_call.get("args", {})
