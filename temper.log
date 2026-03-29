@@ -91,3 +91,4 @@
 2026-03-29 21:08:57,768 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
 2026-03-29 21:09:17,966 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
 2026-03-29 21:09:17,973 [INFO] 历史已保存，当前 20 轮对话
+2026-03-29 21:18:03,167 [INFO] 已加载 20 轮历史对话

@@ -1,5 +1,3 @@
-[文件: C:\Users\Administrator\Documents\temper-evolve\README.md, 总行数: 195, 显示: 1-195行]
-[文件: C:\Users\Administrator\Documents\temper-evolve\README.md, 总行数: 183, 显示: 1-183行]
 # 🧊 Temper Evolve v2.0
 
 > 自进化 Coding Agent，采用 Codong 风格的结构化错误处理
@@ -107,6 +105,7 @@ DASHSCOPE_API_KEY=sk-你的密钥
 - ✅ **智能内容截断** - 长文件内容智能截断（尝试在换行处截断，显示总字符数）
 - ✅ **对话记忆** - 自动保留最近 20 轮对话上下文，支持持久化（重启后恢复）
 - ✅ **文件分页读取** - `fs.read` 支持 `offset` 和 `limit` 参数，高效读取大文件
+- ✅ **自我修复** - 能识别并修复自身代码的缩进错误等语法问题
 
 ---
 

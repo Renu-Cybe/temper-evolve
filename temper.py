@@ -275,59 +275,59 @@ def chat(user_input):
                 print(f"❌ API 调用失败: {e}")
                 return
 
-        content = response.choices[0].message.content
-        full_response.append(content)
-        print(f"\n🤖 Temper: {content[:2000]}{'...' if len(content) > 2000 else ''}")
+            content = response.choices[0].message.content
+            full_response.append(content)
+            print(f"\n🤖 Temper: {content[:2000]}{'...' if len(content) > 2000 else ''}")
 
-        # 检查是否需要调用工具
-        try:
-            if '"tool":' in content:
-                # 使用 brace counting 精确提取第一个 JSON
-                start = content.find('{')
-                brace_count = 0
-                end = start
-                for i, char in enumerate(content[start:]):
-                    if char == '{':
-                        brace_count += 1
-                    elif char == '}':
-                        brace_count -= 1
-                        if brace_count == 0:
-                            end = start + i + 1
-                            break
-                json_str = content[start:end]
-                tool_call = json.loads(json_str)
+            # 检查是否需要调用工具
+            try:
+                if '"tool":' in content:
+                    # 使用 brace counting 精确提取第一个 JSON
+                    start = content.find('{')
+                    brace_count = 0
+                    end = start
+                    for i, char in enumerate(content[start:]):
+                        if char == '{':
+                            brace_count += 1
+                        elif char == '}':
+                            brace_count -= 1
+                            if brace_count == 0:
+                                end = start + i + 1
+                                break
+                    json_str = content[start:end]
+                    tool_call = json.loads(json_str)
 
-                # 强制只处理第一个工具调用（截断后续内容）
-                content = content[:end]
+                    # 强制只处理第一个工具调用（截断后续内容）
+                    content = content[:end]
 
-                tool_name = tool_call.get("tool")
-                tool_args = tool_call.get("args", {})
+                    tool_name = tool_call.get("tool")
+                    tool_args = tool_call.get("args", {})
 
-                print(f"\n🔧 调用: {tool_name}({json.dumps(tool_args, ensure_ascii=False)})")
+                    print(f"\n🔧 调用: {tool_name}({json.dumps(tool_args, ensure_ascii=False)})")
 
-                # 执行工具
-                result = call(tool_name, **tool_args)
+                    # 执行工具
+                    result = call(tool_name, **tool_args)
 
-                # 显示结果摘要
-                if is_error(result):
-                    print(f"❌ 错误: {result.get('error')} - {result.get('message')}")
-                else:
-                    value = unwrap(result)
-                    preview = str(value)[:100] + "..." if len(str(value)) > 100 else str(value)
-                    print(f"✅ 结果: {preview}")
+                    # 显示结果摘要
+                    if is_error(result):
+                        print(f"❌ 错误: {result.get('error')} - {result.get('message')}")
+                    else:
+                        value = unwrap(result)
+                        preview = str(value)[:100] + "..." if len(str(value)) > 100 else str(value)
+                        print(f"✅ 结果: {preview}")
 
-                # 添加到对话历史（工具调用轮）
-                messages.append({"role": "assistant", "content": content})
-                messages.append({"role": "user", "content": format_result(result)})
-                continue
+                    # 添加到对话历史（工具调用轮）
+                    messages.append({"role": "assistant", "content": content})
+                    messages.append({"role": "user", "content": format_result(result)})
+                    continue
 
-        except json.JSONDecodeError as e:
-            print(f"⚠️ JSON 解析错误: {e}")
-        except Exception as e:
-            print(f"⚠️ 工具执行错误: {e}")
+            except json.JSONDecodeError as e:
+                print(f"⚠️ JSON 解析错误: {e}")
+            except Exception as e:
+                print(f"⚠️ 工具执行错误: {e}")
 
-        # 没有工具调用，结束本轮
-        break
+            # 没有工具调用，结束本轮
+            break
 
     except Exception as e:
         log_exception(e, "chat 函数执行失败")
