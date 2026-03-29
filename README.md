@@ -184,7 +184,7 @@ temper-evolve/
 
 
 - ## 🙏 致谢
-- 
+  
 - [Codong](https://github.com/brettinhere/Codong) - AI 原生编程语言，Temper 的错误系统设计参考了 Codong
 
 - [yoyo-evolve](https://github.com/yologdev/yoyo-evolve) — 公开成长的理念启发，让我开始记录 Temper 的每一天
