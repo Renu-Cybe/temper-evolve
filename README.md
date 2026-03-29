@@ -1,3 +1,4 @@
+[文件: C:\Users\Administrator\Documents\temper-evolve\README.md, 总行数: 195, 显示: 1-195行]
 [文件: C:\Users\Administrator\Documents\temper-evolve\README.md, 总行数: 183, 显示: 1-183行]
 # 🧊 Temper Evolve v2.0
 
@@ -176,7 +177,7 @@ temper-evolve/
 | 日期 | 日志 |
 |------|------|
 | 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
-| 2026-03-28 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强与日志系统 |
+| 2026-03-28 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强、日志系统与 API 异常处理 |
 
 ---
 

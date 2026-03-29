@@ -247,21 +247,33 @@ def format_result(result, max_length=8000):
 
 def chat(user_input):
     """主对话循环（带记忆）"""
-    # 构建包含历史的 messages
-    messages = get_messages_with_history(user_input)
-    initial_length = len(messages)
+    logger.info(f"用户输入: {user_input[:100]}...")
+    
+    try:
+        # 构建包含历史的 messages
+        messages = get_messages_with_history(user_input)
+        initial_length = len(messages)
+        logger.info(f"构建消息完成，共 {len(messages)} 条消息")
 
-    max_rounds = 20  # 单次最大工具调用轮数
-    full_response = []  # 收集完整响应
+        max_rounds = 20  # 单次最大工具调用轮数
+        full_response = []  # 收集完整响应
 
-    for round_num in range(max_rounds):
-        # 调用模型
-        response = client.chat.completions.create(
-            model="kimi-k2.5",
-            messages=messages,
-            temperature=0.6,
-            max_tokens=8192
-        )
+        for round_num in range(max_rounds):
+            logger.info(f"开始第 {round_num + 1} 轮对话")
+            
+            # 调用模型
+            try:
+                response = client.chat.completions.create(
+                    model="kimi-k2.5",
+                    messages=messages,
+                    temperature=0.6,
+                    max_tokens=8192
+                )
+                logger.info("API 调用成功")
+            except Exception as e:
+                log_exception(e, f"API 调用失败 (第 {round_num + 1} 轮)")
+                print(f"❌ API 调用失败: {e}")
+                return
 
         content = response.choices[0].message.content
         full_response.append(content)
@@ -316,6 +328,11 @@ def chat(user_input):
 
         # 没有工具调用，结束本轮
         break
+
+    except Exception as e:
+        log_exception(e, "chat 函数执行失败")
+        print(f"❌ 对话处理失败: {e}")
+        return
 
     # 保存到对话历史（合并所有响应）
     final_response = "\n".join(full_response)
