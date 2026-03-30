@@ -93,6 +93,15 @@ DASHSCOPE_API_KEY=sk-你的密钥
 |------|------|------|
 | `shell.run` | 执行命令 | `{"tool": "shell.run", "args": {"cmd": "dir"}}` |
 
+### Self 模块（自我进化）
+
+| 工具 | 描述 | 示例 |
+|------|------|------|
+| `self.snapshot` | 创建代码快照 | `{"tool": "self.snapshot", "args": {"files": ["temper.py"], "tag": "修改前"}}` |
+| `self.diff` | 对比代码变更 | `{"tool": "self.diff", "args": {}}` |
+| `self.log` | 生成进化日志 | `{"tool": "self.log", "args": {"title": "新功能", "description": "..."}}` |
+| `self.list_snapshots` | 列出所有快照 | `{"tool": "self.list_snapshots", "args": {}}` |
+
 ---
 
 ## 🎯 核心特性
@@ -106,6 +115,7 @@ DASHSCOPE_API_KEY=sk-你的密钥
 - ✅ **对话记忆** - 自动保留最近 20 轮对话上下文，支持持久化（重启后恢复）
 - ✅ **文件分页读取** - `fs.read` 支持 `offset` 和 `limit` 参数，高效读取大文件
 - ✅ **自我修复** - 能识别并修复自身代码的缩进错误等语法问题
+- ✅ **自我记录** - 能自动创建快照、对比变更、生成进化日志
 
 ---
 
@@ -161,8 +171,9 @@ temper-evolve/
 ├── temper.py               # 主入口
 ├── journal/                # 进化日志
 │   ├── day-001.md          # Day 1: v2.0 Codong 风格重构
-│   └── day-002.md          # Day 2: 首次自修复、历史持久化、工具增强与日志系统
-├── .temper_history.json    # 对话历史（自动创建）
+│   ├── day-002.md          # Day 2: 首次自修复、历史持久化、工具增强与日志系统
+│   └── day-003.md          # Day 3: 自我进化记录自动化
+├── .temper_backups/        # 代码快照（自动创建）
 ├── temper.log              # 运行日志（自动创建）
 ├── temper_errors.log       # 错误日志（自动创建）
 ├── .env                    # 环境变量（需手动创建）
@@ -176,7 +187,8 @@ temper-evolve/
 | 日期 | 日志 |
 |------|------|
 | 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
-| 2026-03-28 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强、日志系统与 API 异常处理 |
+| 2026-03-29 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强、日志系统与 API 异常处理 |
+| 2026-03-30 | [Day 3](./journal/day-003.md) - 自我进化记录自动化：self.snapshot、self.diff、self.log |
 
 ---
 

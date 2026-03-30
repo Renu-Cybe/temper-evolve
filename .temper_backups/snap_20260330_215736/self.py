@@ -245,28 +245,28 @@ def log(title="", description=""):
 
 """
 
-    if diff_result.get("ok"):
-        changes = diff_result.get("changes", [])
+    if diff_result["ok"]:
+        changes = diff_result["value"]["changes"]
 
         content += f"""### 代码变更概览
 
-{diff_result.get("summary", "无变更")}
+{diff_result["value"]["summary"]}
 
 | 文件 | 状态 | 新增 | 删除 |
 |------|------|------|------|
 """
 
         for change in changes:
-            status = change.get("status", "unknown")
+            status = change["status"]
             additions = change.get("additions", "-")
             deletions = change.get("deletions", "-")
-            content += f"| {change.get('file', 'unknown')} | {status} | {additions} | {deletions} |\n"
+            content += f"| {change['file']} | {status} | {additions} | {deletions} |\n"
 
         content += "\n---\n\n## 详细变更\n\n"
 
         for change in changes:
-            if change.get("status") == "modified":
-                content += f"### {change.get('file', 'unknown')}\n\n```\n{change.get('diff', '')[:500]}...\n```\n\n"
+            if change["status"] == "modified":
+                content += f"### {change['file']}\n\n```\n{change['diff'][:500]}...\n```\n\n"
 
     else:
         content += f"无法获取变更详情: {diff_result.get('error', '未知错误')}\n\n"
