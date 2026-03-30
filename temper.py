@@ -300,8 +300,23 @@ def chat(user_input):
                     # 强制只处理第一个工具调用（截断后续内容）
                     content = content[:end]
 
-                    tool_name = tool_call.get("tool")
-                    tool_args = tool_call.get("args", {})
+                    # 检查是否是工具链调用
+                    if "chain" in tool_call:
+                        chain = tool_call.get("chain", [])
+                        print(f"\n⛓️ 串行工具链: {len(chain)} 个工具")
+                        from temper.tools import call_chain
+                        result = call_chain(chain)
+                    elif "parallel" in tool_call:
+                        chain = tool_call.get("parallel", [])
+                        print(f"\n⚡ 并行工具链: {len(chain)} 个工具")
+                        from temper.tools import call_parallel
+                        result = call_parallel(chain)
+                    else:
+                        # 单工具调用
+                        tool_name = tool_call.get("tool")
+                        tool_args = tool_call.get("args", {})
+                        print(f"\n🔧 调用: {tool_name}({json.dumps(tool_args, ensure_ascii=False)})")
+                        result = call(tool_name, **tool_args)
 
                     print(f"\n🔧 调用: {tool_name}({json.dumps(tool_args, ensure_ascii=False)})")
 

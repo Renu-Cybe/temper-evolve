@@ -112,6 +112,7 @@ DASHSCOPE_API_KEY=sk-你的密钥
 - ✅ **自我修改** - 可以用 `fs.edit` 修改 temper.py 自己的代码
 - ✅ **Python 语法检查** - 编辑 .py 文件时自动验证 AST
 - ✅ **智能内容截断** - 长文件内容智能截断（尝试在换行处截断，显示总字符数）
+- ✅ **工具链组合** - 支持 `chain`（串行）和 `parallel`（并行）执行多个工具
 - ✅ **对话记忆** - 自动保留最近 20 轮对话上下文，支持持久化（重启后恢复）
 - ✅ **文件分页读取** - `fs.read` 支持 `offset` 和 `limit` 参数，高效读取大文件
 - ✅ **自我修复** - 能识别并修复自身代码的缩进错误等语法问题
@@ -155,6 +156,31 @@ DASHSCOPE_API_KEY=sk-你的密钥
 📜 当前对话历史: 3 轮 (最多保留 20 轮)
 ```
 
+### 工具链组合（串行）
+```
+👤 你: 执行完整进化流程
+🤖 Temper: {"chain": [
+  {"tool": "self.snapshot", "args": {"files": ["temper.py"], "tag": "修改前"}},
+  {"tool": "fs.edit", "args": {"path": "temper.py", "old_string": "...", "new_string": "..."}},
+  {"tool": "self.diff", "args": {}},
+  {"tool": "self.log", "args": {"title": "新功能", "description": "..."}}
+]}
+⛓️ 串行工具链: 4 个工具
+✅ 全部完成
+```
+
+### 工具链组合（并行）
+```
+👤 你: 并行读取多个文件
+🤖 Temper: {"parallel": [
+  {"tool": "fs.read", "args": {"path": "README.md"}},
+  {"tool": "fs.read", "args": {"path": "CHANGELOG.md"}},
+  {"tool": "fs.list", "args": {"path": "temper/tools"}}
+]}
+⚡ 并行工具链: 3 个工具
+✅ 全部完成 (3/3)
+```
+
 ---
 
 ## 📁 项目结构
@@ -172,7 +198,8 @@ temper-evolve/
 ├── journal/                # 进化日志
 │   ├── day-001.md          # Day 1: v2.0 Codong 风格重构
 │   ├── day-002.md          # Day 2: 首次自修复、历史持久化、工具增强与日志系统
-│   └── day-003.md          # Day 3: 自我进化记录自动化
+│   ├── day-003.md          # Day 3: 自我进化记录自动化
+│   └── day-004.md          # Day 4: 工具链组合（chain/parallel）
 ├── .temper_backups/        # 代码快照（自动创建）
 ├── temper.log              # 运行日志（自动创建）
 ├── temper_errors.log       # 错误日志（自动创建）
@@ -189,6 +216,7 @@ temper-evolve/
 | 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
 | 2026-03-29 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强、日志系统与 API 异常处理 |
 | 2026-03-30 | [Day 3](./journal/day-003.md) - 自我进化记录自动化：self.snapshot、self.diff、self.log |
+| 2026-03-31 | [Day 4](./journal/day-004.md) - 工具链组合：chain（串行）/ parallel（并行）执行 |
 
 ---
 
