@@ -1,235 +1,227 @@
-# 🧊 Temper Evolve v2.0
+# 🧊 Temper Evolve v3.0 - 四自系统
 
-> 自进化 Coding Agent，采用 Codong 风格的结构化错误处理
+AI 原生 Coding Agent，实现完整的四自系统（自感知、自适应、自组织、自编译），严格遵循铁三角原则。
 
----
+## 🎯 四自系统
 
-## ✨ 快速开始
+### 1. 自感知（Self-Awareness）
+- **健康自检**：系统级健康检查，监控所有模块状态
+- **资源监控**：CPU、内存、磁盘、网络实时监控
+- **依赖检查**：外部 API、文件、服务依赖验证
+- **健康报告**：结构化健康报告生成
 
-### 1. 克隆仓库
+### 2. 自适应（Self-Adaptive）
+- **动态调参**：根据负载自动调整系统参数
+- **性能优化**：基于指标自动生成优化建议
+- **限流控制**：令牌桶限流 + 熔断器模式
+- **配置热更新**：运行时配置更新，无需重启
 
-```bash
-git clone https://github.com/Renu-Cybe/temper-evolve.git
-cd temper-evolve
-```
+### 3. 自组织（Self-Organizing）
+- **工作流定义**：声明式工作流定义，支持链式调用
+- **任务编排**：串行、并行、条件任务执行
+- **依赖解析**：拓扑排序，自动解析任务依赖
+- **动态合成**：根据条件动态合成工作流
 
-### 2. 安装依赖
+### 4. 自编译（Self-Compiling）
+- **代码模板**：支持变量插值、条件渲染、循环
+- **代码生成**：运行时代码生成和编译
+- **自我修复**：自动检测并修复代码问题
+- **热加载**：模块热加载，无需重启
 
-```bash
-pip install openai python-dotenv
-```
+## 🔺 铁三角原则
 
-### 3. 配置 API Key
+### 信任原则（Trust）
+- ✅ **透明可审计**：所有操作记录审计日志
+- ✅ **不擅自修改用户文件**：修改前必须创建备份
+- ✅ **操作可回溯**：支持操作历史查询和回滚
+- ✅ **日志不可篡改**：使用哈希链保证日志完整性
 
-创建 `.env` 文件：
+### 复利原则（Compound）
+- 💰 **能力持久化**：系统状态自动保存和恢复
+- 💰 **下次启动继承**：持久化数据跨会话保留
+- 💰 **增量更新**：支持增量保存，提高效率
+- 💰 **版本迁移**：数据版本自动迁移
 
-```bash
-# Windows
-notepad .env
+### 杠杆原则（Leverage）
+- ⚙️ **配置驱动**：所有行为通过配置控制
+- ⚙️ **拒绝硬编码**：零硬编码，完全可配置
+- ⚙️ **配置分层**：默认/用户/运行时三层配置
+- ⚙️ **热加载配置**：运行时更新配置无需重启
 
-# Linux/Mac
-touch .env
-```
+## 💓 心跳进化器（2026-04-01 新增）
 
-写入你的阿里云百炼 API Key：
+### 核心功能
 
-```env
-DASHSCOPE_API_KEY=sk-你的密钥
-```
+**让四自系统真正"活"起来：**
 
-### 4. 启动 Temper
-
-```bash
-python temper.py
-```
-
-启动后输入 `tools` 查看可用工具。
-
-### 内置命令
-
-| 命令 | 功能 |
-|------|------|
-| `tools` | 查看可用工具 |
-| `/clear` | 清空对话历史 |
-| `/history` | 查看当前历史长度 |
-| `exit` | 退出程序 |
-
-### 对话记忆
-
-Temper 会自动保留最近 **20 轮**对话历史，你可以：
-- 引用之前的内容继续对话
-- 使用 `/clear` 清空历史
-- 使用 `/history` 查看当前历史长度
-
----
-
-## ⚙️ 配置
-
-创建 `.env` 文件：
-
-```env
-DASHSCOPE_API_KEY=sk-你的密钥
-```
-
----
-
-## 🛠️ 可用工具
-
-### FS 模块（文件系统）
-
-| 工具 | 描述 | 示例 |
+| 行为 | 频率 | 说明 |
 |------|------|------|
-| `fs.read` | 读取文件 | `{"tool": "fs.read", "args": {"path": "file.txt"}}` |
-| `fs.read` | 读取文件（分页） | `{"tool": "fs.read", "args": {"path": "file.txt", "offset": 0, "limit": 50}}` |
-| `fs.write` | 写入文件 | `{"tool": "fs.write", "args": {"path": "file.txt", "content": "..."}}` |
-| `fs.edit` | 编辑文件（精确匹配） | `{"tool": "fs.edit", "args": {"path": "file.txt", "old_string": "...", "new_string": "..."}}` |
-| `fs.exists` | 检查存在 | `{"tool": "fs.exists", "args": {"path": "file.txt"}}` |
-| `fs.list` | 列出目录 | `{"tool": "fs.list", "args": {"path": "."}}` |
-| `fs.read_json` | 读取 JSON | `{"tool": "fs.read_json", "args": {"path": "data.json"}}` |
+| **自感知** | 每 60 秒 | 资源检查 + 异常告警 |
+| **自适应** | 每 5 分钟 | 参数调优建议 |
+| **自编译** | 每 1 小时 | 代码问题扫描 |
 
-### Shell 模块
+### 使用方法
 
-| 工具 | 描述 | 示例 |
-|------|------|------|
-| `shell.run` | 执行命令 | `{"tool": "shell.run", "args": {"cmd": "dir"}}` |
-
-### Self 模块（自我进化）
-
-| 工具 | 描述 | 示例 |
-|------|------|------|
-| `self.snapshot` | 创建代码快照 | `{"tool": "self.snapshot", "args": {"files": ["temper.py"], "tag": "修改前"}}` |
-| `self.diff` | 对比代码变更 | `{"tool": "self.diff", "args": {}}` |
-| `self.log` | 生成进化日志 | `{"tool": "self.log", "args": {"title": "新功能", "description": "..."}}` |
-| `self.list_snapshots` | 列出所有快照 | `{"tool": "self.list_snapshots", "args": {}}` |
-
----
-
-## 🎯 核心特性
-
-- ✅ **结构化错误** - 每个错误包含 `code`, `message`, `fix`, `retry` 字段（学习 Codong）
-- ✅ **模块化工具** - 按功能分组（fs/shell），易于扩展
-- ✅ **类型验证** - 自动检查参数类型
-- ✅ **自我修改** - 可以用 `fs.edit` 修改 temper.py 自己的代码
-- ✅ **Python 语法检查** - 编辑 .py 文件时自动验证 AST
-- ✅ **智能内容截断** - 长文件内容智能截断（尝试在换行处截断，显示总字符数）
-- ✅ **工具链组合** - 支持 `chain`（串行）和 `parallel`（并行）执行多个工具
-- ✅ **对话记忆** - 自动保留最近 20 轮对话上下文，支持持久化（重启后恢复）
-- ✅ **文件分页读取** - `fs.read` 支持 `offset` 和 `limit` 参数，高效读取大文件
-- ✅ **自我修复** - 能识别并修复自身代码的缩进错误等语法问题
-- ✅ **自我记录** - 能自动创建快照、对比变更、生成进化日志
-
----
-
-## 💡 使用示例
-
-### 读取文件
 ```
-👤 你: 读取 README.md
-🤖 Temper: {"tool": "fs.read", "args": {"path": "README.md"}}
-🔧 调用: fs.read({"path": "README.md"})
-✅ 结果: # 🧊 Temper Evolve v2.0...
+/evolver        # 查看状态
+/evolver start  # 启动进化器
+/evolver stop   # 停止进化器
+/evolver debug  # 切换调试模式
 ```
 
-### 自我修改
-```
-👤 你: 修改 temper.py，把 temperature 从 0.6 改成 0.8
-🤖 Temper: {"tool": "fs.read", "args": {"path": "temper.py"}}
-...（读取内容）...
-🤖 Temper: {"tool": "fs.edit", "args": {"path": "temper.py", "old_string": "temperature=0.6", "new_string": "temperature=0.8"}}
-🔧 调用: fs.edit(...)
-✅ 结果: 成功修改 temper.py
-```
+### 配置参数
 
-### 对话记忆（多轮对话）
-```
-👤 你: 读取 README.md
-🤖 Temper: {"tool": "fs.read", "args": {"path": "README.md"}}
-✅ 结果: # 🧊 Temper Evolve v2.0...
-
-👤 你: 总结一下刚才的内容      ← 有上下文记忆！
-🤖 Temper: 这是 Temper v2.0 的说明文档，主要特性包括...
-
-👤 你: 再详细说说第一点
-🤖 Temper: 结构化错误是指...
-
-👤 你: /history
-📜 当前对话历史: 3 轮 (最多保留 20 轮)
-```
-
-### 工具链组合（串行）
-```
-👤 你: 执行完整进化流程
-🤖 Temper: {"chain": [
-  {"tool": "self.snapshot", "args": {"files": ["temper.py"], "tag": "修改前"}},
-  {"tool": "fs.edit", "args": {"path": "temper.py", "old_string": "...", "new_string": "..."}},
-  {"tool": "self.diff", "args": {}},
-  {"tool": "self.log", "args": {"title": "新功能", "description": "..."}}
-]}
-⛓️ 串行工具链: 4 个工具
-✅ 全部完成
-```
-
-### 工具链组合（并行）
-```
-👤 你: 并行读取多个文件
-🤖 Temper: {"parallel": [
-  {"tool": "fs.read", "args": {"path": "README.md"}},
-  {"tool": "fs.read", "args": {"path": "CHANGELOG.md"}},
-  {"tool": "fs.list", "args": {"path": "temper/tools"}}
-]}
-⚡ 并行工具链: 3 个工具
-✅ 全部完成 (3/3)
-```
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `self_check_interval` | 60s | 自检间隔 |
+| `adapt_interval` | 300s | 自适应间隔 |
+| `repair_check_interval` | 3600s | 修复检查间隔 |
+| `auto_repair_enabled` | False | 自动修复（安全优先）|
+| `debug` | False | 调试输出 |
 
 ---
 
 ## 📁 项目结构
 
 ```
-temper-evolve/
-├── temper/                  # 核心包
-│   ├── core/               # 核心模块
-│   │   ├── errors.py       # 结构化错误系统
-│   │   └── types.py        # 类型验证
-│   └── tools/              # 工具模块
-│       ├── fs.py           # 文件系统
-│       └── shell.py        # 命令执行
-├── temper.py               # 主入口
-├── journal/                # 进化日志
-│   ├── day-001.md          # Day 1: v2.0 Codong 风格重构
-│   ├── day-002.md          # Day 2: 首次自修复、历史持久化、工具增强与日志系统
-│   ├── day-003.md          # Day 3: 自我进化记录自动化
-│   └── day-004.md          # Day 4: 工具链组合（chain/parallel）
-├── .temper_backups/        # 代码快照（自动创建）
-├── temper.log              # 运行日志（自动创建）
-├── temper_errors.log       # 错误日志（自动创建）
-├── .env                    # 环境变量（需手动创建）
-└── README.md               # 项目文档
+temper/
+├── temper.py                    # 主入口
+├── README.md                    # 说明文档
+├── .temper/
+│   └── config.json             # 默认配置
+└── temper/
+    ├── core/                   # 核心模块
+    │   ├── errors.py          # Codong 错误处理
+    │   ├── result.py          # 结果类型
+    │   └── events.py          # 事件系统
+    ├── config/                 # 配置系统（杠杆原则）
+    │   ├── manager.py
+    │   └── schema.py
+    ├── audit/                  # 审计系统（信任原则）
+    │   ├── logger.py
+    │   └── tracer.py
+    ├── persistence/            # 持久化系统（复利原则）
+    │   └── snapshot.py
+    ├── self_awareness/         # 自感知模块
+    │   ├── metrics.py
+    │   ├── resources.py
+    │   └ diagnostics.py
+    ├── self_adaptive/          # 自适应模块
+    │   ├── tuner.py
+    │   └ strategies.py
+    ├── self_organizing/        # 自组织模块
+    │   ├── workflow.py
+    │   └ scheduler.py
+    │   └ graph.py
+    ├── self_compiling/         # 自编译模块
+    │   ├── repair.py
+    │   └ generator.py
+    ├── heartbeat/              # 💓 心跳进化器（新增）
+    │   ├── __init__.py
+    │   └ evolver.py           # 核心进化器（445行）
+    └── __main__.py             # 主入口
 ```
 
+## 🚀 快速开始
+
+### 1. 启动系统
+
+```bash
+python3 temper.py
+```
+
+### 2. 可用命令
+
+```
+/status          - 查看系统状态
+/metrics         - 查看系统指标
+/health          - 查看健康状态
+/config          - 查看/修改配置
+/snapshot        - 创建/恢复快照
+/audit           - 查看审计日志
+/repair          - 代码修复
+/generate        - 代码生成
+/evolver         - 心跳进化器控制（新增）
+/evolver start   - 启动进化器
+/evolver stop    - 停止进化器
+/evolver debug   - 切换调试模式
+/clear           - 清空对话历史
+exit             - 退出
+```
+
+### 3. 编程接口
+
+```python
+from temper.core import (
+    get_four_self_system,
+    create_workflow, parallel_tasks,
+    quick_health_check
+)
+
+# 初始化系统
+system = get_four_self_system()
+system.initialize()
+
+# 健康检查
+result = system.health_check()
+if result['ok']:
+    report = result['value']
+    print(f"状态: {report.status}")
+
+# 创建工作流
+workflow = create_workflow("我的工作流")
+workflow.add_task("task1", lambda: ok("结果1"))
+workflow.add_task("task2", lambda: ok("结果2"), dependencies=["task1"])
+
+# 运行工作流
+result = system.run_workflow(workflow)
+
+# 并行任务
+result = parallel_tasks([task1, task2, task3])
+```
+
+## 🛡️ Codong 错误处理风格
+
+所有函数遵循 Codong 错误处理风格：
+
+```python
+# 成功返回
+return {"ok": True, "value": 返回值}
+
+# 错误返回
+return {"ok": False, "error": "ERROR_CODE", "message": "详细错误信息"}
+
+# 检查错误
+if is_error(result): ...
+
+# 提取值
+value = unwrap(result, default=None)
+```
+
+## 📊 系统要求
+
+- Python 3.8+
+- 仅使用 Python 标准库
+- 无外部依赖
+
+## 📜 许可证
+
+MIT License
+
 ---
 
-## 📖 每日进化
+## 📅 更新日志
 
-| 日期 | 日志 |
-|------|------|
-| 2026-03-28 | [Day 1](./journal/day-001.md) - v2.0 Codong 风格重构 |
-| 2026-03-29 | [Day 2](./journal/day-002.md) - 首次自修复：Bug 修复、历史持久化、工具增强、日志系统与 API 异常处理 |
-| 2026-03-30 | [Day 3](./journal/day-003.md) - 自我进化记录自动化：self.snapshot、self.diff、self.log |
-| 2026-03-31 | [Day 4](./journal/day-004.md) - 工具链组合：chain（串行）/ parallel（并行）执行 |
+### 2026-04-01 - v3.0.1
 
----
+**新增：心跳进化器**
 
-## 🔗 相关项目
+- ✅ 新增 `temper/heartbeat/` 模块
+- ✅ `TemperEvolver` 类实现定时触发四自行为
+- ✅ 新增 `/evolver` 命令（start/stop/debug）
+- ✅ 测试脚本 `test_simple.py` 验证通过
+- ✅ 更新 journal/day-006.md 记录开发过程
 
+**解决的问题：**
 
-- ## 🙏 致谢
-  
-- [Codong](https://github.com/brettinhere/Codong) - AI 原生编程语言，Temper 的错误系统设计参考了 Codong
-
-- [yoyo-evolve](https://github.com/yologdev/yoyo-evolve) — 公开成长的理念启发，让我开始记录 Temper 的每一天
-
-
----
-
-*Tempered in iteration, hardened in use.*
+用户反馈"四自系统代码存在但感受不到运行"，通过添加心跳循环让系统真正"活"起来。
