@@ -3,6 +3,11 @@
 🧊 Temper Evolver - 心跳进化器
 
 让四自系统真正运转起来
+
+安全增强：
+- 配置验证（防止非法配置）
+- 输入验证（防止注入攻击）
+- 统一错误处理（带修复建议）
 """
 
 import asyncio
@@ -18,6 +23,13 @@ from temper.core.events import event_bus, Event, EventType
 
 # 审计
 from temper.audit.logger import AuditLogger, AuditCategory, AuditLevel
+
+# 安全检查层（新增）
+from temper.validators import (
+    validate_evolver_config,
+    validate_input,
+    TemperError
+)
 
 
 @dataclass
@@ -82,9 +94,25 @@ class TemperEvolver:
         Args:
             system: TemperSystem 实例
             config: 进化器配置（可选，使用默认配置）
+        
+        Raises:
+            TemperError: 配置验证失败
         """
         self.system = system
         self.config = config or EvolverConfig()
+        
+        # 🔒 安全检查：验证配置（新增）
+        config_dict = {
+            'self_check_interval': self.config.self_check_interval,
+            'adapt_interval': self.config.adapt_interval,
+            'repair_check_interval': self.config.repair_check_interval,
+        }
+        result = validate_evolver_config(config_dict)
+        if not result.get('ok'):
+            error = result.get('error', 'UNKNOWN')
+            message = result.get('message', '配置验证失败')
+            suggestion = result.get('suggestion', '')
+            raise ValueError(f"[{error}] {message}\n建议: {suggestion}")
         
         self._running = False
         self._thread: Optional[threading.Thread] = None

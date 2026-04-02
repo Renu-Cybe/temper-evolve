@@ -148,3 +148,121 @@
 2026-03-30 22:16:37,604 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
 2026-03-30 22:16:37,607 [INFO] API 调用成功
 2026-03-30 22:16:37,611 [INFO] 历史已保存，当前 20 轮对话
+2026-03-31 22:22:57,576 [INFO] 已加载 20 轮历史对话
+2026-03-31 23:28:00,407 [INFO] 已加载 5 轮历史对话
+2026-03-31 23:31:26,958 [INFO] 已加载 5 轮历史对话
+2026-03-31 23:31:34,923 [INFO] 用户输入: 你好...
+2026-03-31 23:31:34,923 [INFO] 构建消息完成，共 12 条消息
+2026-03-31 23:31:34,923 [INFO] 开始第 1 轮对话
+2026-03-31 23:31:46,977 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-03-31 23:31:46,981 [INFO] API 调用成功
+2026-03-31 23:31:46,981 [INFO] 历史已保存，当前 6 轮对话
+2026-03-31 23:36:50,722 [INFO] 已加载 6 轮历史对话
+2026-03-31 23:37:55,267 [INFO] 已加载 6 轮历史对话
+2026-03-31 23:39:08,645 [INFO] 已加载 6 轮历史对话
+2026-03-31 23:39:13,179 [INFO] 用户输入: 你好...
+2026-03-31 23:39:13,179 [INFO] 构建消息完成，共 14 条消息
+2026-03-31 23:39:13,179 [INFO] 开始第 1 轮对话
+2026-03-31 23:39:16,105 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-03-31 23:39:16,114 [INFO] API 调用成功
+2026-03-31 23:39:16,114 [INFO] 历史已保存，当前 7 轮对话
+2026-03-31 23:39:38,511 [INFO] 用户输入: 你有什么技能？...
+2026-03-31 23:39:38,511 [INFO] 构建消息完成，共 16 条消息
+2026-03-31 23:39:38,511 [INFO] 开始第 1 轮对话
+2026-03-31 23:39:44,482 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-03-31 23:39:44,483 [INFO] API 调用成功
+2026-03-31 23:39:44,483 [INFO] 历史已保存，当前 8 轮对话
+2026-03-31 23:40:40,378 [INFO] 用户输入: temper.py 检查你自己的代码文件...
+2026-03-31 23:40:40,378 [INFO] 构建消息完成，共 18 条消息
+2026-03-31 23:40:40,378 [INFO] 开始第 1 轮对话
+2026-03-31 23:40:42,722 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-03-31 23:40:42,723 [INFO] API 调用成功
+2026-03-31 23:40:42,725 [INFO] 开始第 2 轮对话
+2026-03-31 23:40:56,058 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-03-31 23:40:56,060 [INFO] API 调用成功
+2026-03-31 23:40:56,062 [INFO] 历史已保存，当前 9 轮对话
+2026-03-31 23:43:49,248 [INFO] 已加载 9 轮历史对话
+2026-03-31 23:46:42,223 [INFO] 已加载 9 轮历史对话
+2026-04-01 17:01:33,620 [INFO] 已加载 9 轮历史对话
+2026-04-01 17:01:39,297 [INFO] 用户输入: 你好...
+2026-04-01 17:01:39,297 [INFO] 构建消息完成，共 20 条消息
+2026-04-01 17:01:39,297 [INFO] 开始第 1 轮对话
+2026-04-01 17:01:42,883 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:01:42,898 [INFO] API 调用成功
+2026-04-01 17:01:42,899 [INFO] 历史已保存，当前 10 轮对话
+2026-04-01 17:01:49,152 [INFO] 用户输入: 你有什么功能？...
+2026-04-01 17:01:49,152 [INFO] 构建消息完成，共 22 条消息
+2026-04-01 17:01:49,152 [INFO] 开始第 1 轮对话
+2026-04-01 17:01:59,137 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:01:59,138 [INFO] API 调用成功
+2026-04-01 17:01:59,139 [INFO] 历史已保存，当前 11 轮对话
+2026-04-01 17:02:23,459 [INFO] 用户输入: 检查你自己的代码...
+2026-04-01 17:02:23,460 [INFO] 构建消息完成，共 24 条消息
+2026-04-01 17:02:23,460 [INFO] 开始第 1 轮对话
+2026-04-01 17:02:37,297 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:02:37,298 [INFO] API 调用成功
+2026-04-01 17:02:37,298 [INFO] 开始第 2 轮对话
+2026-04-01 17:02:49,439 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:02:49,440 [INFO] API 调用成功
+2026-04-01 17:02:49,441 [INFO] 历史已保存，当前 12 轮对话
+2026-04-01 17:03:19,637 [INFO] 用户输入: 为什么被截断了？...
+2026-04-01 17:03:19,637 [INFO] 构建消息完成，共 26 条消息
+2026-04-01 17:03:19,637 [INFO] 开始第 1 轮对话
+2026-04-01 17:03:28,122 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:03:28,124 [INFO] API 调用成功
+2026-04-01 17:03:28,124 [INFO] 开始第 2 轮对话
+2026-04-01 17:03:44,485 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:03:44,485 [INFO] API 调用成功
+2026-04-01 17:03:44,491 [INFO] 开始第 3 轮对话
+2026-04-01 17:03:56,114 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:03:56,114 [INFO] API 调用成功
+2026-04-01 17:03:56,156 [INFO] 开始第 4 轮对话
+2026-04-01 17:04:03,408 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:04:03,408 [INFO] API 调用成功
+2026-04-01 17:04:03,437 [INFO] 开始第 5 轮对话
+2026-04-01 17:04:20,750 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:04:20,751 [INFO] API 调用成功
+2026-04-01 17:04:20,778 [INFO] 开始第 6 轮对话
+2026-04-01 17:04:35,582 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:04:35,583 [INFO] API 调用成功
+2026-04-01 17:04:35,616 [INFO] 开始第 7 轮对话
+2026-04-01 17:04:42,548 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:04:42,549 [INFO] API 调用成功
+2026-04-01 17:04:42,552 [INFO] 历史已保存，当前 13 轮对话
+2026-04-01 17:53:43,068 [INFO] 已加载 13 轮历史对话
+2026-04-01 17:53:49,069 [INFO] 用户输入: 你好...
+2026-04-01 17:53:49,069 [INFO] 构建消息完成，共 28 条消息
+2026-04-01 17:53:49,069 [INFO] 开始第 1 轮对话
+2026-04-01 17:53:51,530 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:53:51,538 [INFO] API 调用成功
+2026-04-01 17:53:51,538 [INFO] 历史已保存，当前 14 轮对话
+2026-04-01 17:54:00,851 [INFO] 用户输入: 你有什么技能？...
+2026-04-01 17:54:00,851 [INFO] 构建消息完成，共 30 条消息
+2026-04-01 17:54:00,851 [INFO] 开始第 1 轮对话
+2026-04-01 17:54:07,043 [INFO] HTTP Request: POST https://coding.dashscope.aliyuncs.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-01 17:54:07,044 [INFO] API 调用成功
+2026-04-01 17:54:07,047 [INFO] 历史已保存，当前 15 轮对话
+2026-04-02 21:22:12,772 [INFO] 已加载 15 轮历史对话
+2026-04-02 21:22:13,347 [INFO] 已加载 15 轮历史对话
+2026-04-02 21:22:13,348 [ERROR] 
+============================================================
+异常时间: 2026-04-02 21:22:13
+上下文: 加载历史失败
+异常类型: ValueError
+异常信息: I/O operation on closed file.
+堆栈跟踪:
+Traceback (most recent call last):
+  File "C:\Users\Administrator\temper-evolve\temper.py", line 134, in load_history
+    print(f"📂 已加载 {len(self.conversation_history)//2} 轮历史对话")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+
+============================================================
+
+2026-04-02 21:23:07,178 [INFO] 已加载 15 轮历史对话
+2026-04-02 21:23:07,744 [INFO] 已加载 15 轮历史对话
+2026-04-02 21:23:07,745 [INFO] 历史已保存，当前 16 轮对话
+2026-04-02 21:23:53,301 [INFO] 已加载 16 轮历史对话
+2026-04-02 21:23:53,948 [INFO] 已加载 16 轮历史对话
+2026-04-02 21:23:53,949 [INFO] 历史已保存，当前 17 轮对话
+2026-04-02 21:23:53,949 [INFO] 历史已保存，当前 0 轮对话

@@ -1,0 +1,76 @@
+{
+  "app": {
+    "name": "Temper",
+    "version": "3.0.0",
+    "debug": false,
+    "log_level": "INFO"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "format": "%(asctime)s [%(levelname)s] %(message)s",
+    "file_output": true,
+    "console_output": true,
+    "log_dir": "logs"
+  },
+  "storage": {
+    "base_path": "~/.temper",
+    "data_path": "data",
+    "cache_path": "cache",
+    "temp_path": "tmp"
+  },
+  "network": {
+    "timeout": 30,
+    "retry_count": 3,
+    "user_agent": "Temper/3.0.0"
+  },
+  "plugins": {
+    "enabled": true,
+    "auto_load": true,
+    "paths": ["plugins"]
+  },
+  "ui": {
+    "theme": "default",
+    "language": "zh_CN",
+    "interactive": true
+  },
+  "four_self": {
+    "self_awareness": {
+      "enabled": true,
+      "check_interval": 60,
+      "cpu_warning": 70.0,
+      "cpu_critical": 90.0,
+      "memory_warning": 80.0,
+      "memory_critical": 95.0,
+      "disk_warning": 85.0,
+      "disk_critical": 95.0
+    },
+    "self_adaptive": {
+      "enabled": true,
+      "adapt_interval": 300,
+      "strategy": "balanced",
+      "rate_limit": {
+        "enabled": true,
+        "requests_per_second": 10,
+        "burst_size": 20
+      },
+      "circuit_breaker": {
+        "enabled": true,
+        "failure_threshold": 5,
+        "recovery_timeout": 60
+      }
+    },
+    "self_organizing": {
+      "enabled": true,
+      "max_workers": 4,
+      "task_timeout": 300,
+      "retry_count": 3
+    },
+    "self_compiling": {
+      "enabled": true,
+      "auto_backup": true,
+      "hot_reload": false,
+      "backup_count": 5
+    }
+  }
+}

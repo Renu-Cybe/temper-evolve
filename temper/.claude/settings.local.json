@@ -1,0 +1,11 @@
+{
+  "outputStyle": "explanatory",
+  "customStyles": {
+    "temper_heartbeat": {
+      "name": "temper_heartbeat",
+      "description": "Heartbeat evolution mode",
+      "instructions": "Focus on heartbeat evolution tasks",
+      "keep_coding_instructions": false
+    }
+  }
+}

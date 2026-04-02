@@ -1,0 +1,32 @@
+2026-04-02 21:22:13,348 [ERROR] 
+============================================================
+异常时间: 2026-04-02 21:22:13
+上下文: 加载历史失败
+异常类型: ValueError
+异常信息: I/O operation on closed file.
+堆栈跟踪:
+Traceback (most recent call last):
+  File "C:\Users\Administrator\temper-evolve\temper.py", line 134, in load_history
+    print(f"📂 已加载 {len(self.conversation_history)//2} 轮历史对话")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+
+============================================================
+
+None
+2026-04-02 21:22:13,348 [ERROR] 
+============================================================
+异常时间: 2026-04-02 21:22:13
+上下文: 加载历史失败
+异常类型: ValueError
+异常信息: I/O operation on closed file.
+堆栈跟踪:
+Traceback (most recent call last):
+  File "C:\Users\Administrator\temper-evolve\temper.py", line 134, in load_history
+    print(f"📂 已加载 {len(self.conversation_history)//2} 轮历史对话")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+
+============================================================
+
+None

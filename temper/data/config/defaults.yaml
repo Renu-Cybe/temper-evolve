@@ -1,0 +1,78 @@
+# Temper 系统默认配置
+
+system:
+  name: "temper"
+  version: "3.0.0"
+  log_level: "info"
+  max_workers: 4
+  debug_mode: false
+
+self_awareness:
+  enabled: true
+  health_check_interval: 30
+  metrics_collection_interval: 10
+  alert_thresholds:
+    cpu_percent: 80.0
+    memory_percent: 85.0
+    disk_percent: 90.0
+    response_time_ms: 5000
+  retention_days: 7
+  enable_detailed_metrics: true
+
+self_adaptive:
+  enabled: true
+  tuning_interval: 300
+  optimization_enabled: true
+  load_balance_enabled: true
+  auto_scale: false
+  tuning_params:
+    temperature_range: [0.1, 1.0]
+    max_tokens_range: [1024, 8192]
+    learning_rate: 0.01
+  strategies: []
+
+self_organizing:
+  enabled: true
+  max_concurrent_tasks: 10
+  task_timeout: 300
+  retry_attempts: 3
+  retry_delay: 5
+  workflow_defaults:
+    parallel_limit: 5
+    dependency_resolution: "automatic"
+    fail_fast: true
+
+self_compiling:
+  enabled: true
+  auto_repair: false
+  auto_generate: false
+  hotload_enabled: true
+  generation:
+    template_dir: "templates"
+    output_dir: "generated"
+    validation_enabled: true
+    backup_before_write: true
+  hotload:
+    watch_patterns:
+      - "*.py"
+    exclude_patterns:
+      - "__pycache__/*"
+      - "*.pyc"
+    cooldown_seconds: 2
+
+audit:
+  enabled: true
+  log_level: "info"
+  storage_type: "file"
+  storage_dir: "data/audit"
+  retention_days: 30
+  max_file_size_mb: 100
+  enable_console_output: false
+
+persistence:
+  enabled: true
+  storage_dir: "data"
+  auto_save_interval: 60
+  snapshot_interval: 3600
+  max_snapshots: 10
+  compression_enabled: true

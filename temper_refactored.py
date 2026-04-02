@@ -58,12 +58,7 @@ class TemperApp:
         self.conversation_history = []
         self.max_history = 20
         self.history_file = ".temper_history.json"
-        try:
-            self.load_history()
-        except Exception as e:
-            # 静默处理加载历史的错误
-            self.logger.warning(f"加载历史失败: {e}")
-            self.conversation_history = []
+        self.load_history()
         
         # 初始化心跳进化器
         self.evolver = None
@@ -136,18 +131,10 @@ class TemperApp:
                     data = json.load(f)
                     self.conversation_history = data.get('history', [])
                     self.logger.info(f"已加载 {len(self.conversation_history)//2} 轮历史对话")
-                    # 遵活的输出，避免在测试环境中出错
-                    try:
-                        print(f"📂 已加载 {len(self.conversation_history)//2} 轮历史对话")
-                    except:
-                        pass  # 在测试环境中忽略输出错误
+                    print(f"📂 已加载 {len(self.conversation_history)//2} 轮历史对话")
         except Exception as e:
             self.log_exception(e, "加载历史失败")
-            # 遵活的输出，避免在测试环境中出错
-            try:
-                print(f"⚠️ 加载历史失败: {e}")
-            except:
-                pass  # 在测试环境中忽略输出错误
+            print(f"⚠️ 加载历史失败: {e}")
             self.conversation_history = []
 
     def save_history(self):
