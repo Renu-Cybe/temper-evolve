@@ -54,6 +54,9 @@ from .core import (
     self_compile, enable_hot_reload,
 )
 
+# 从 heartbeat 导入心跳进化器
+from .heartbeat import TemperEvolver, EvolverConfig
+
 __all__ = [
     '__version__',
     # 错误处理
@@ -88,4 +91,6 @@ __all__ = [
     'CodeTemplate', 'CodeGenerator', 'SelfRepair', 'HotLoader',
     'SelfCompilingModule', 'compile_template',
     'self_compile', 'enable_hot_reload',
+    # 心跳进化器
+    'TemperEvolver', 'EvolverConfig',
 ]

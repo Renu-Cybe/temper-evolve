@@ -43,32 +43,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 
-# =============================================================================
-# Codong风格错误处理工具函数
-# =============================================================================
-
-def is_error(result: Dict[str, Any]) -> bool:
-    """检查结果是否为错误"""
-    return not result.get("ok", False)
-
-
-def unwrap(result: Dict[str, Any]) -> Any:
-    """从结果中提取值，如果是错误则抛出异常"""
-    if is_error(result):
-        error_code = result.get("error", "UNKNOWN_ERROR")
-        message = result.get("message", "未知错误")
-        raise RuntimeError(f"[{error_code}] {message}")
-    return result.get("value")
-
-
-def ok(value: Any) -> Dict[str, Any]:
-    """创建成功结果"""
-    return {"ok": True, "value": value}
-
-
-def err(error_code: str, message: str) -> Dict[str, Any]:
-    """创建错误结果"""
-    return {"ok": False, "error": error_code, "message": message}
+# 导入统一的错误处理
+from .result import ok, err, is_error, unwrap, ErrorCode
 
 
 # =============================================================================

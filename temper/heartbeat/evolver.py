@@ -38,11 +38,11 @@ class EvolverConfig:
     
     # 自感知（Self-Awareness）
     self_check_interval: int = 60  # 秒，每分钟自检
-    health_report_interval: int = 300  # 秒，每5分钟健康报告
+    health_report_interval: int = 300  # 秒，每 5 分钟健康报告
     
     # 自适应（Self-Adaptive）
-    adapt_interval: int = 300  # 秒，每5分钟自适应
-    adapt_threshold: float = 0.1  # 变化阈值（10%变化才调整）
+    adapt_interval: int = 300  # 秒，每 5 分钟自适应
+    adapt_threshold: float = 0.1  # 变化阈值（10% 变化才调整）
     
     # 自组织（Self-Organizing）
     workflow_check_interval: int = 60  # 秒，每分钟检查工作流
@@ -54,6 +54,46 @@ class EvolverConfig:
     # 全局控制
     enabled: bool = True
     debug: bool = False
+    
+    @staticmethod
+    def from_heartbeat_config(config) -> 'EvolverConfig':
+        """从主配置系统的 HeartbeatConfig 创建 EvolverConfig
+        
+        Args:
+            config: config.schema.HeartbeatConfig 实例
+            
+        Returns:
+            EvolverConfig 实例
+        """
+        return EvolverConfig(
+            self_check_interval=config.self_check_interval,
+            health_report_interval=config.health_report_interval,
+            adapt_interval=config.adapt_interval,
+            adapt_threshold=config.adapt_threshold,
+            workflow_check_interval=config.workflow_check_interval,
+            repair_check_interval=config.repair_check_interval,
+            auto_repair_enabled=config.auto_repair_enabled,
+            enabled=config.enabled,
+            debug=config.debug
+        )
+    
+    def to_heartbeat_config(self) -> dict:
+        """转换为字典格式（用于保存到主配置）
+        
+        Returns:
+            配置字典
+        """
+        return {
+            'enabled': self.enabled,
+            'debug': self.debug,
+            'self_check_interval': self.self_check_interval,
+            'health_report_interval': self.health_report_interval,
+            'adapt_interval': self.adapt_interval,
+            'adapt_threshold': self.adapt_threshold,
+            'workflow_check_interval': self.workflow_check_interval,
+            'repair_check_interval': self.repair_check_interval,
+            'auto_repair_enabled': self.auto_repair_enabled,
+        }
 
 
 class TemperEvolver:
@@ -141,6 +181,13 @@ class TemperEvolver:
         self._running = True
         self._stats['start_time'] = datetime.now()
         
+        # 发布系统启动事件
+        event_bus.publish(Event(
+            type=SystemEventType.SYSTEM_START,
+            source="TemperEvolver",
+            data={'version': '3.0.0', 'config': self.config.__dict__}
+        ))
+        
         # 创建后台线程运行异步循环
         self._thread = threading.Thread(
             target=self._run_async_loop,
@@ -179,6 +226,13 @@ class TemperEvolver:
         # 记录审计日志
         if self.system.audit:
             duration = (datetime.now() - self._stats['start_time']).total_seconds()
+            
+            # 发布系统停止事件
+            event_bus.publish(Event(
+                type=SystemEventType.SYSTEM_STOP,
+                source="TemperEvolver",
+                data={'stats': self._stats, 'duration_seconds': duration}
+            ))
             self.system.audit.info(
                 category=AuditCategory.SYSTEM,
                 action="evolver.stop",
@@ -344,6 +398,13 @@ class TemperEvolver:
                 
                 if suggestions:
                     print(f"\n🔄 自适应建议:")
+                    
+                    # 发布自适应事件
+                    event_bus.publish(Event(
+                        type=EventType.PARAMETER_TUNED,
+                        source="TemperEvolver",
+                        data={'suggestions_count': len(suggestions), 'check_id': self._stats['adaptations']}
+                    ))
                     for param, (current, suggested, reason) in suggestions.items():
                         change_pct = abs(suggested - current) / max(current, 1) * 100
                         
@@ -381,6 +442,13 @@ class TemperEvolver:
                 
                 if issues:
                     print(f"\n🔧 发现 {len(issues)} 个潜在问题:")
+                    
+                    # 发布代码扫描事件
+                    event_bus.publish(Event(
+                        type=EventType.CODE_GENERATED,
+                        source="TemperEvolver",
+                        data={'scan_issues': len(issues), 'issues_preview': [str(i) for i in issues[:5]]}
+                    ))
                     for issue in issues[:5]:  # 只显示前5个
                         print(f"  - {issue}")
                     
@@ -411,7 +479,7 @@ class TemperEvolver:
     
     def get_stats(self) -> Dict[str, Any]:
         """获取运行统计"""
-        return {
+        stats = {
             'running': self._running,
             **self._stats,
             'uptime_seconds': (
@@ -419,3 +487,119 @@ class TemperEvolver:
                 if self._stats['start_time'] else 0
             )
         }
+        
+        # 持久化统计（新增）
+        if hasattr(self.system, 'state') and self.system.state:
+            try:
+                self.system.state.set("evolver.stats", stats)
+                self.system.state.set("evolver.last_updated", datetime.now().isoformat())
+            except Exception as e:
+                if self.config.debug:
+                    print(f"⚠️ 持久化失败：{e}")
+        
+        return stats
+
+
+
+# ============================================================
+# 事件处理器注册（新增）
+# ============================================================
+
+def register_evolver_event_handlers(event_bus, system) -> None:
+    """注册进化器事件处理器
+    
+    将四自系统事件链接到审计和持久化系统
+    
+    Args:
+        event_bus: 全局事件总线
+        system: TemperSystem 实例
+    """
+    
+    def on_health_check(event: Event):
+        """健康检查事件处理"""
+        if system.audit:
+            system.audit.info(
+                category=AuditCategory.HEALTH,
+                action="health.check",
+                source="TemperEvolver",
+                parameters=event.data
+            )
+    
+    def on_alert_triggered(event: Event):
+        """告警事件处理 - 记录到审计和持久化"""
+        # 审计日志
+        if system.audit:
+            system.audit.warning(
+                category=AuditCategory.HEALTH,
+                action="alert.triggered",
+                source="TemperEvolver",
+                parameters={
+                    'correlation_id': event.correlation_id,
+                    'alerts': event.data.get('alerts', [])
+                }
+            )
+        
+        # 持久化告警
+        if system.state:
+            system.state.set(
+                f"alerts.{event.correlation_id}",
+                {
+                    'timestamp': event.timestamp.isoformat(),
+                    'type': 'resource_alert',
+                    'data': event.data
+                }
+            )
+    
+    def on_parameter_tuned(event: Event):
+        """参数调优事件处理"""
+        if system.audit:
+            system.audit.info(
+                category=AuditCategory.ADAPTATION,
+                action="parameter.tuned",
+                source="TemperEvolver",
+                parameters={
+                    'correlation_id': event.correlation_id,
+                    'suggestions_count': event.data.get('suggestions_count', 0)
+                }
+            )
+    
+    def on_code_generated(event: Event):
+        """代码生成/扫描事件处理"""
+        if system.audit:
+            system.audit.info(
+                category=AuditCategory.REPAIR,
+                action="code.scan",
+                source="TemperEvolver",
+                parameters={
+                    'correlation_id': event.correlation_id,
+                    'scan_issues': event.data.get('scan_issues', 0)
+                }
+            )
+    
+    def on_system_start(event: Event):
+        """系统启动事件处理"""
+        if system.audit:
+            system.audit.info(
+                category=AuditCategory.SYSTEM,
+                action="system.start",
+                source="TemperEvolver",
+                parameters=event.data
+            )
+    
+    def on_system_stop(event: Event):
+        """系统停止事件处理"""
+        if system.audit:
+            system.audit.info(
+                category=AuditCategory.SYSTEM,
+                action="system.stop",
+                source="TemperEvolver",
+                parameters=event.data
+            )
+    
+    # 注册所有处理器
+    event_bus.subscribe(EventType.HEALTH_CHECK, on_health_check)
+    event_bus.subscribe(EventType.ALERT_TRIGGERED, on_alert_triggered)
+    event_bus.subscribe(EventType.PARAMETER_TUNED, on_parameter_tuned)
+    event_bus.subscribe(EventType.CODE_GENERATED, on_code_generated)
+    event_bus.subscribe(EventType.SYSTEM_START, on_system_start)
+    event_bus.subscribe(EventType.SYSTEM_STOP, on_system_stop)

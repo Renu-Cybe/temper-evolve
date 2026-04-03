@@ -25,6 +25,7 @@ from temper.core import (
     quick_health_check, create_health_report,
     create_workflow, run_workflow, serial_tasks, parallel_tasks,
 )
+from temper.core.events import event_bus
 from temper.tools import TOOLS, call, call_chain, call_parallel
 from temper.heartbeat import TemperEvolver, EvolverConfig
 
@@ -348,6 +349,11 @@ class TemperApp:
                 debug=False
             )
             self.evolver = TemperEvolver(self.four_self_system, config)
+            
+            # 注册事件处理器（新增）
+            from temper.heartbeat import register_evolver_event_handlers
+            register_evolver_event_handlers(event_bus, self.four_self_system)
+            
             self.evolver.start()
         
     def stop_evolver(self):

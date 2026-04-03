@@ -18,10 +18,11 @@
 __version__ = "3.0.0"
 __author__ = "Temper AI"
 
-# 导出核心错误处理
-from .errors import (
+# 导出核心错误处理（统一错误处理系统）
+from .result import (
     ok, err, is_error, is_ok, unwrap, unwrap_or_raise,
-    map_result, bind_result, CodongError, ErrorCode,
+    map_result, bind_result, flat_map, try_catch, from_exception,
+    CodongError, ErrorCode,
     file_not_found, file_read_error, file_write_error,
     permission_denied, network_error, timeout_error,
     validation_error, not_found

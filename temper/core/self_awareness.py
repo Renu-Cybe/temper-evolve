@@ -33,69 +33,8 @@ from enum import Enum
 import subprocess
 import threading
 
-
-# =============================================================================
-# Codong 风格错误处理工具函数
-# =============================================================================
-
-def is_error(result: Dict[str, Any]) -> bool:
-    """
-    检查结果是否为错误
-    
-    Args:
-        result: 函数返回的结果字典
-        
-    Returns:
-        True 如果是错误，False 如果是成功
-    """
-    return not result.get("ok", False)
-
-
-def unwrap(result: Dict[str, Any]) -> Any:
-    """
-    从结果中提取值，如果是错误则抛出异常
-    
-    Args:
-        result: 函数返回的结果字典
-        
-    Returns:
-        成功时的 value 值
-        
-    Raises:
-        RuntimeError: 如果是错误结果
-    """
-    if is_error(result):
-        error_code = result.get("error", "UNKNOWN_ERROR")
-        message = result.get("message", "Unknown error")
-        raise RuntimeError(f"[{error_code}] {message}")
-    return result.get("value")
-
-
-def ok(value: Any) -> Dict[str, Any]:
-    """
-    创建成功结果
-    
-    Args:
-        value: 返回值
-        
-    Returns:
-        格式化的成功结果字典
-    """
-    return {"ok": True, "value": value}
-
-
-def err(error_code: str, message: str) -> Dict[str, Any]:
-    """
-    创建错误结果
-    
-    Args:
-        error_code: 错误代码
-        message: 错误信息
-        
-    Returns:
-        格式化的错误结果字典
-    """
-    return {"ok": False, "error": error_code, "message": message}
+# 导入统一的错误处理
+from ..core.result import ok, err, is_error, unwrap, ErrorCode
 
 
 # =============================================================================

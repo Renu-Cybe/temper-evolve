@@ -126,6 +126,28 @@ class PersistenceConfig:
     max_snapshots: int = 10
     compression_enabled: bool = True
 
+@dataclass
+class HeartbeatConfig:
+    """心跳进化器配置（Phase 4 新增）"""
+    enabled: bool = True
+    debug: bool = False
+    
+    # 自感知（Self-Awareness）
+    self_check_interval: int = 60  # 秒，每分钟自检
+    health_report_interval: int = 300  # 秒，每 5 分钟健康报告
+    
+    # 自适应（Self-Adaptive）
+    adapt_interval: int = 300  # 秒，每 5 分钟自适应
+    adapt_threshold: float = 0.1  # 变化阈值（10% 变化才调整）
+    
+    # 自组织（Self-Organizing）
+    workflow_check_interval: int = 60  # 秒，每分钟检查工作流
+    
+    # 自编译（Self-Compiling）
+    repair_check_interval: int = 3600  # 秒，每小时检查修复
+    auto_repair_enabled: bool = False  # 自动修复默认关闭（安全考虑）
+
+
 
 @dataclass
 class Config:
@@ -137,6 +159,7 @@ class Config:
     self_compiling: SelfCompilingConfig = field(default_factory=SelfCompilingConfig)
     audit: AuditConfig = field(default_factory=AuditConfig)
     persistence: PersistenceConfig = field(default_factory=PersistenceConfig)
+    heartbeat: HeartbeatConfig = field(default_factory=HeartbeatConfig)
     
     # 自定义配置（插件等）
     custom: Dict[str, Any] = field(default_factory=dict)
@@ -165,5 +188,6 @@ class Config:
             self_compiling=convert_section(SelfCompilingConfig, data.get('self_compiling')),
             audit=convert_section(AuditConfig, data.get('audit')),
             persistence=convert_section(PersistenceConfig, data.get('persistence')),
+            heartbeat=convert_section(HeartbeatConfig, data.get('heartbeat')),
             custom=data.get('custom', {})
         )
